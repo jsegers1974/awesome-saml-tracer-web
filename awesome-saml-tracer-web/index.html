@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Awesome SAML Tracer — Capture, decode &amp; share SAML SSO traffic</title>
+  <meta name="description" content="A modern Chrome extension for capturing, decoding and sharing SAML SSO traffic. Clean attribute display, a built-in JWT decoder, one-click HTML reports, and SAML-tracer import/export — all 100% local and private.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <meta property="og:title" content="Awesome SAML Tracer">
+  <meta property="og:description" content="Capture, decode and share SAML SSO traffic — a modern, privacy-first Chrome extension.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/icon-128.png">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <img src="assets/icon-128.png" alt="">
+          <span>Awesome SAML Tracer</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="index.html" class="active">Home</a>
+          <a href="how-to.html">How-to</a>
+          <a href="support.html">Support</a>
+          <a href="privacy.html">Privacy</a>
+          <a class="btn btn-primary nav-cta" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="container">
+      <img class="hero-logo" src="assets/logo.svg" alt="Awesome SAML Tracer logo">
+      <h1>Debug SAML SSO without the headache</h1>
+      <p class="hero-tagline">Capture, decode and share SAML single sign-on traffic — right inside Chrome.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+        <a class="btn btn-secondary btn-lg btn-on-dark" href="how-to.html">See how it works</a>
+      </div>
+      <div class="hero-meta">
+        <span><span class="tick">✓</span> 100% local &amp; private</span>
+        <span><span class="tick">✓</span> No account, no sign-up</span>
+        <span><span class="tick">✓</span> Open import / export</span>
+      </div>
+      <div class="hero-shot">
+        <img src="assets/ast-help-all-traffic.png" alt="Awesome SAML Tracer capturing live network traffic">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Trust strip ===== -->
+  <div class="trust">
+    <div class="container">
+      <span><strong>Manifest V3</strong> &middot; Chrome 111+</span>
+      <span>A modern replacement for the original <strong>SAML-tracer</strong></span>
+      <span>Built-in <strong>JWT decoder</strong></span>
+      <span>Works in the <strong>DevTools</strong> panel</span>
+    </div>
+  </div>
+
+  <!-- ===== Features ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">Why you'll like it</p>
+        <h2>Everything you need to trace an SSO flow</h2>
+        <p class="lead" style="margin:0 auto;">Awesome SAML Tracer watches your browser's network traffic, decodes every SAML message in real time, and makes it effortless to share what you find.</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <h3>Automatic SAML decoding</h3>
+          <p>SAMLRequest and SAMLResponse messages appear the moment they happen — fully decoded with issuer, destination, subject, conditions and a clean attributes table.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🪪</div>
+          <h3>Built-in JWT decoder</h3>
+          <p>Paste any token to split it into header, payload and signature, with a Highlights panel that surfaces issuer, audience, expiry and whether it's expired.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗂️</div>
+          <h3>Four focused views</h3>
+          <p>Switch between SAML-only, All Traffic, Errors (4xx/5xx) and the JWT decoder. A live search bar filters by URL, method or status.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📄</div>
+          <h3>One-click sharing</h3>
+          <p>Generate a self-contained HTML report, copy a decoded entry as plain text, or export structured JSON — perfect for support tickets.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔄</div>
+          <h3>SAML-tracer compatible</h3>
+          <p>Import and export the same JSON format as the original SAML-tracer extension, so captures move freely between tools and teammates.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3>Private by design</h3>
+          <p>Everything stays on your device using Chrome's local storage. No servers, no analytics, no tracking — nothing is ever transmitted.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Showcase ===== -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">A closer look</p>
+        <h2>Designed to get out of your way</h2>
+      </div>
+
+      <div class="showcase-row">
+        <div class="showcase-text">
+          <h3>Read SAML like it's plain English</h3>
+          <p>No more squinting at base64. Select any capture and the detail pane lays out the decoded message — kind, issuer, destination, subject, status, conditions — with attributes shown by friendly name, full URN and value.</p>
+          <ul class="feat-list">
+            <li>Redirect and POST bindings both decoded automatically</li>
+            <li>Raw XML one click away when you need it</li>
+            <li>Copy the whole decoded entry as formatted text</li>
+          </ul>
+        </div>
+        <div class="showcase-figure">
+          <img src="assets/ast-help-saml.png" alt="The SAML view with its four-view toggle and info bar">
+        </div>
+      </div>
+
+      <div class="showcase-row flip">
+        <div class="showcase-text">
+          <h3>Tune it to your environment</h3>
+          <p>Highlight your IdP and SP domains with a gold star, pin the headers and parameters you care about into a copy-ready info bar, and extract tenant or config IDs straight out of URL paths.</p>
+          <ul class="feat-list">
+            <li>Wildcard domain highlighting</li>
+            <li>Pinned headers &amp; SAML parameters as one-click chips</li>
+            <li>Rules to extract values from URL paths</li>
+          </ul>
+        </div>
+        <div class="showcase-figure">
+          <img src="assets/ast-help-settings.png" alt="The settings panel with highlight domains and info-bar rules">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Comparison ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">Coming from SAML-tracer?</p>
+        <h2>A familiar tool, rebuilt for today</h2>
+        <p class="lead" style="margin:0 auto;">Awesome SAML Tracer keeps what worked about the original SAML-tracer and adds the things you always wished it had.</p>
+      </div>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Original SAML-tracer</th>
+            <th class="col-ours">Awesome SAML Tracer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Decodes SAML messages</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td>Friendly-name attribute table</td><td class="no">Raw only</td><td class="yes">Yes</td></tr>
+          <tr><td>Built-in JWT decoder</td><td class="no">—</td><td class="yes">Yes</td></tr>
+          <tr><td>Self-contained HTML reports</td><td class="no">—</td><td class="yes">Yes</td></tr>
+          <tr><td>Errors-only view</td><td class="no">—</td><td class="yes">Yes</td></tr>
+          <tr><td>Domain highlighting &amp; pinned headers</td><td class="no">—</td><td class="yes">Yes</td></tr>
+          <tr><td>JSON import / export</td><td class="yes">Yes</td><td class="yes">Yes (same format)</td></tr>
+          <tr><td>Manifest V3 &amp; DevTools panel</td><td class="no">Legacy</td><td class="yes">Yes</td></tr>
+        </tbody>
+      </table>
+      <p class="muted center" style="margin-top:1rem;font-size:.9rem;">Exports use the SAML-tracer JSON format, so files open in either extension.</p>
+    </div>
+  </section>
+
+  <!-- ===== Privacy band ===== -->
+  <section class="section band">
+    <div class="container">
+      <p class="eyebrow">Privacy first</p>
+      <h2>Your SAML traffic never leaves your device</h2>
+      <p>Awesome SAML Tracer captures traffic locally and stores it with Chrome's own storage APIs. There are no servers, no analytics and no third-party services — the developer can't see your captures, and neither can anyone else.</p>
+      <div class="hero-actions" style="margin-top:1.6rem;">
+        <a class="btn btn-secondary btn-on-dark" href="privacy.html">Read the privacy policy</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Final CTA ===== -->
+  <section class="section cta-final">
+    <div class="container">
+      <h2>Ready to trace your next SSO flow?</h2>
+      <p class="lead" style="margin:0 auto;">Install in seconds. Pin it to your toolbar. Trigger a login and watch the SAML messages decode themselves.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+        <a class="btn btn-secondary btn-lg" href="how-to.html">Read the how-to guide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img src="assets/icon-128.png" alt="" style="width:28px;height:28px;border-radius:6px;">
+            <span>Awesome SAML Tracer</span>
+          </a>
+          <p>A modern Chrome extension for capturing, decoding and sharing SAML SSO traffic — built as a full-featured replacement for the original SAML-tracer.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to guide</a>
+          <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Chrome Web Store</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="support.html">Support &amp; FAQ</a>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Report an issue</a>
+          <a href="privacy.html">Privacy policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer" target="_blank" rel="noopener">GitHub repository</a>
+          <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Support on Ko-fi ☕</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Awesome SAML Tracer. Not affiliated with the original SAML-tracer project.</span>
+        <span>Made for the SSO debugging crowd.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

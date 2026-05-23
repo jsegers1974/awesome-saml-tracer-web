@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — Awesome SAML Tracer</title>
+  <meta name="description" content="Privacy policy for Awesome SAML Tracer. The extension collects, stores and transmits nothing — all captured SAML traffic stays on your device.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <img src="assets/icon-128.png" alt="">
+          <span>Awesome SAML Tracer</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to</a>
+          <a href="support.html">Support</a>
+          <a href="privacy.html" class="active">Privacy</a>
+          <a class="btn btn-primary nav-cta" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page hero ===== -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Privacy Policy</h1>
+      <p>What Awesome SAML Tracer sees, where it stays, and what it never does.</p>
+    </div>
+  </section>
+
+  <!-- ===== Prose ===== -->
+  <div class="container">
+    <article class="prose">
+      <p class="updated">Last updated: May 2026</p>
+
+      <div class="callout">
+        <p><strong>In short:</strong> Awesome SAML Tracer does not collect, store or transmit any of your data to any external server. Everything the extension sees stays on your device.</p>
+      </div>
+
+      <h2>What the extension sees</h2>
+      <p>Awesome SAML Tracer monitors network requests made by your browser in order to detect and decode SAML SSO messages (SAMLRequest and SAMLResponse). This includes:</p>
+      <ul>
+        <li>URLs of requests your browser makes</li>
+        <li>HTTP request and response headers</li>
+        <li>Form data and query parameters that contain SAML payloads</li>
+      </ul>
+      <p>This information is only ever used to display it to you inside the extension. It is never sent anywhere.</p>
+
+      <h2>Where data is stored</h2>
+      <p>Captured traffic is stored <strong>locally on your device</strong> using Chrome's built-in <code>chrome.storage.local</code> API. This storage:</p>
+      <ul>
+        <li>Is private to the extension on your device</li>
+        <li>Is not synced to your Google account or any cloud service</li>
+        <li>Is automatically cleared when you click the ⊘ Clear button or uninstall the extension</li>
+        <li>Holds a maximum of 200 captures at a time (oldest are dropped automatically)</li>
+      </ul>
+      <p>Settings you configure (highlight domains, important headers, and so on) are stored using <code>chrome.storage.sync</code>, which Chrome may sync across your own signed-in devices. No one else can access this data.</p>
+
+      <h2>What the extension does not do</h2>
+      <ul>
+        <li><strong>Does not transmit any data</strong> to any server, including the developer's</li>
+        <li><strong>Does not track</strong> your browsing history or behavior</li>
+        <li><strong>Does not store</strong> any data beyond your current session's captures</li>
+        <li><strong>Does not access</strong> any page content beyond the network requests described above</li>
+        <li><strong>Does not use</strong> analytics, crash reporting, or any third-party services</li>
+      </ul>
+
+      <h2>Exported files</h2>
+      <p>When you use the Export (⬆) or Report (📄) features, a file is saved to your local Downloads folder. That file stays on your device. The developer has no access to it and no knowledge that you created it.</p>
+
+      <h2>Permissions explained</h2>
+      <table class="data-table">
+        <thead>
+          <tr><th>Permission</th><th>Why it's needed</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>webRequest</code></td><td>Observe outgoing network requests to detect SAML messages</td></tr>
+          <tr><td><code>storage</code></td><td>Save captures and settings locally on your device</td></tr>
+          <tr><td><code>tabs</code></td><td>Open the extension window and clear the badge when you navigate</td></tr>
+          <tr><td><code>downloads</code></td><td>Save the HTML report to your Downloads folder</td></tr>
+          <tr><td><code>&lt;all_urls&gt;</code></td><td>SAML SSO can occur on any domain — the extension must be able to observe requests to any URL</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Contact</h2>
+      <p>If you have questions about this privacy policy, <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">open an issue on GitHub</a> or reach out via <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Ko-fi</a>.</p>
+    </article>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img src="assets/icon-128.png" alt="" style="width:28px;height:28px;border-radius:6px;">
+            <span>Awesome SAML Tracer</span>
+          </a>
+          <p>A modern Chrome extension for capturing, decoding and sharing SAML SSO traffic — built as a full-featured replacement for the original SAML-tracer.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to guide</a>
+          <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Chrome Web Store</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="support.html">Support &amp; FAQ</a>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Report an issue</a>
+          <a href="privacy.html">Privacy policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer" target="_blank" rel="noopener">GitHub repository</a>
+          <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Support on Ko-fi ☕</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Awesome SAML Tracer. Not affiliated with the original SAML-tracer project.</span>
+        <span>Made for the SSO debugging crowd.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

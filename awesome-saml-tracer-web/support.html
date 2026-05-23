@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support &amp; FAQ — Awesome SAML Tracer</title>
+  <meta name="description" content="Get help with Awesome SAML Tracer: frequently asked questions, troubleshooting tips, and how to report bugs or request features.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <img src="assets/icon-128.png" alt="">
+          <span>Awesome SAML Tracer</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to</a>
+          <a href="support.html" class="active">Support</a>
+          <a href="privacy.html">Privacy</a>
+          <a class="btn btn-primary nav-cta" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page hero ===== -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Support</h1>
+      <p>Answers to common questions — and the fastest ways to get unstuck.</p>
+    </div>
+  </section>
+
+  <!-- ===== Get help ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">Get help</p>
+        <h2>Three ways to reach a solution</h2>
+      </div>
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="card-icon">📖</div>
+          <h3>Read the how-to</h3>
+          <p>The step-by-step guide covers installing, every view, sharing captures and all the settings.</p>
+          <p><a href="how-to.html">Open the how-to guide →</a></p>
+        </div>
+        <div class="support-card">
+          <div class="card-icon">🐛</div>
+          <h3>Report an issue</h3>
+          <p>Found a bug or have a feature idea? Open an issue on GitHub — it's the best place to track it.</p>
+          <p><a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Open a GitHub issue →</a></p>
+        </div>
+        <div class="support-card">
+          <div class="card-icon">☕</div>
+          <h3>Support the project</h3>
+          <p>Awesome SAML Tracer is free. If it saves you time, a coffee on Ko-fi keeps it going.</p>
+          <p><a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Buy me a coffee →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">FAQ</p>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq">
+
+        <details>
+          <summary>Is Awesome SAML Tracer free?</summary>
+          <div class="faq-answer"><p>Yes. The extension is free to install and use from the Chrome Web Store. If it saves you time, you can optionally <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">support development on Ko-fi</a> — but that's entirely up to you.</p></div>
+        </details>
+
+        <details>
+          <summary>Does it send my SAML data anywhere?</summary>
+          <div class="faq-answer"><p>No. Everything the extension captures stays on your device. It uses Chrome's local storage APIs and never transmits data to any server — including the developer's. There's no analytics and no third-party services. See the <a href="privacy.html">privacy policy</a> for the full detail.</p></div>
+        </details>
+
+        <details>
+          <summary>How is it different from the original SAML-tracer?</summary>
+          <div class="faq-answer"><p>Awesome SAML Tracer is a modern, Manifest V3 rebuild. On top of decoding SAML messages, it adds a friendly-name attribute table, a built-in JWT decoder, self-contained HTML reports, an errors-only view, domain highlighting and pinned headers. It reads and writes the same JSON export format, so captures move freely between the two tools.</p></div>
+        </details>
+
+        <details>
+          <summary>Why don't I see any SAML traffic?</summary>
+          <div class="faq-answer">
+            <p>A few things to check:</p>
+            <ul>
+              <li>The extension captures in real time — it can't see requests that happened <em>before</em> it was installed or before the window was open. Trigger the SSO login again with the extension running.</li>
+              <li>Make sure the tab performing the login is active.</li>
+              <li>If you're on the SAML view and expect non-SAML requests, switch to the <strong>All Traffic</strong> view.</li>
+              <li>Check that capture isn't paused — the toolbar button should show ⏸ (pause), not ▶ (resume).</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>Can I open exports from the original SAML-tracer?</summary>
+          <div class="faq-answer"><p>Yes. Awesome SAML Tracer imports and exports the same JSON format as the original SAML-tracer. Use the 📂 Import button or drag-and-drop a <code>.json</code> file anywhere onto the window. Files exported from Awesome SAML Tracer also open in the original extension.</p></div>
+        </details>
+
+        <details>
+          <summary>Which browsers does it support?</summary>
+          <div class="faq-answer"><p>Chrome 111 or newer. It also runs on Chromium-based browsers that support Manifest V3 extensions and the Chrome Web Store, such as recent versions of Edge and Brave.</p></div>
+        </details>
+
+        <details>
+          <summary>What permissions does it need, and why?</summary>
+          <div class="faq-answer">
+            <p>The extension requests only what it needs to observe SAML traffic locally:</p>
+            <ul>
+              <li><code>webRequest</code> — to observe network requests and detect SAML messages</li>
+              <li><code>storage</code> — to save captures and settings locally on your device</li>
+              <li><code>tabs</code> — to open the extension window and manage its badge</li>
+              <li><code>downloads</code> — to save HTML reports to your Downloads folder</li>
+              <li><code>&lt;all_urls&gt;</code> — SAML SSO can occur on any domain, so it must observe requests to any URL</li>
+            </ul>
+            <p>Full detail is in the <a href="privacy.html">privacy policy</a>.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>How do I share a capture with a developer or support team?</summary>
+          <div class="faq-answer">
+            <p>You have three options:</p>
+            <ul>
+              <li><strong>HTML report</strong> (📄) — a self-contained file saved to Downloads that opens in any browser, no internet needed.</li>
+              <li><strong>Copy</strong> — select an entry and click Copy in the detail pane to grab it as formatted plain text for chat or email.</li>
+              <li><strong>Export</strong> (⬆) — a JSON file the recipient can re-open in either SAML tracer extension.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>How many captures does it keep?</summary>
+          <div class="faq-answer"><p>Up to 200 captures at a time. When that limit is reached, the oldest entries are dropped automatically. You can clear everything at any time with the ⊘ Clear button.</p></div>
+        </details>
+
+        <details>
+          <summary>How do I report a bug or request a feature?</summary>
+          <div class="faq-answer"><p>Open an issue on the <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">GitHub issue tracker</a>. Including your Chrome version and, where possible, an exported JSON capture or HTML report makes bugs much faster to reproduce and fix.</p></div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Still need help ===== -->
+  <section class="section cta-final">
+    <div class="container">
+      <h2>Still need a hand?</h2>
+      <p class="lead" style="margin:0 auto;">If the FAQ didn't cover it, open an issue on GitHub and describe what you're seeing — it's the best way to get a fix or an answer.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Open a GitHub issue</a>
+        <a class="btn btn-secondary btn-lg" href="how-to.html">Back to the how-to guide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img src="assets/icon-128.png" alt="" style="width:28px;height:28px;border-radius:6px;">
+            <span>Awesome SAML Tracer</span>
+          </a>
+          <p>A modern Chrome extension for capturing, decoding and sharing SAML SSO traffic — built as a full-featured replacement for the original SAML-tracer.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to guide</a>
+          <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Chrome Web Store</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="support.html">Support &amp; FAQ</a>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Report an issue</a>
+          <a href="privacy.html">Privacy policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer" target="_blank" rel="noopener">GitHub repository</a>
+          <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Support on Ko-fi ☕</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Awesome SAML Tracer. Not affiliated with the original SAML-tracer project.</span>
+        <span>Made for the SSO debugging crowd.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

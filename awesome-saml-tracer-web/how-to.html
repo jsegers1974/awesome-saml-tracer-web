@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How-to guide — Awesome SAML Tracer</title>
+  <meta name="description" content="Step-by-step guide to Awesome SAML Tracer: install it, open it, use the four views, share captures as HTML reports or JSON, and configure the power-user settings.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <img src="assets/icon-128.png" alt="">
+          <span>Awesome SAML Tracer</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="how-to.html" class="active">How-to</a>
+          <a href="support.html">Support</a>
+          <a href="privacy.html">Privacy</a>
+          <a class="btn btn-primary nav-cta" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page hero ===== -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>How-to guide</h1>
+      <p>Everything you need to install, use and get the most out of Awesome SAML Tracer.</p>
+    </div>
+  </section>
+
+  <!-- ===== Docs ===== -->
+  <div class="container">
+    <div class="docs">
+
+      <!-- TOC -->
+      <aside class="docs-toc">
+        <h4>On this page</h4>
+        <a href="#install">Installing</a>
+        <a href="#open">Opening the extension</a>
+        <a href="#interface">The interface</a>
+        <a href="#views">The four views</a>
+        <a href="#toolbar">Toolbar buttons</a>
+        <a href="#sharing">Sharing captures</a>
+        <a href="#settings">Settings</a>
+        <a href="#devtools">DevTools panel</a>
+        <a href="#tips">Tips &amp; troubleshooting</a>
+      </aside>
+
+      <!-- Body -->
+      <main class="docs-body">
+
+        <h2 id="install">Installing</h2>
+        <p>The quickest way to install is from the Chrome Web Store:</p>
+        <ol class="steps">
+          <li>Open the <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Awesome SAML Tracer listing</a> in the Chrome Web Store.</li>
+          <li>Click <strong>Add to Chrome</strong>, then confirm.</li>
+          <li>Open the puzzle-piece menu in the toolbar and <strong>pin</strong> the extension so it's always one click away.</li>
+        </ol>
+
+        <h3>Manual install (developer mode)</h3>
+        <p>Prefer to run it from source? You can load the unpacked extension:</p>
+        <ol class="steps">
+          <li>Download or clone the <a href="https://github.com/jsegers1974/awesome-saml-tracer" target="_blank" rel="noopener">GitHub repository</a>.</li>
+          <li>Open <code>chrome://extensions</code> and enable <strong>Developer mode</strong> with the toggle in the top-right.</li>
+          <li>Click <strong>Load unpacked</strong> and select the <code>awesome-saml-tracer/</code> folder.</li>
+          <li>Pin the extension from the puzzle-piece menu.</li>
+        </ol>
+        <div class="callout"><p><strong>Requirements:</strong> Chrome 111 or newer. Awesome SAML Tracer is a Manifest V3 extension.</p></div>
+
+        <h2 id="open">Opening the extension</h2>
+        <p>Click the extension icon in your toolbar to open the main window. You can also reach it from inside Chrome DevTools — open DevTools on any page and click the <strong>SAML</strong> tab.</p>
+
+        <h2 id="interface">The interface</h2>
+        <p>The window is split into two panes:</p>
+        <ul>
+          <li><strong>Left pane</strong> — the capture list. It shows SAML messages or network requests depending on the active view.</li>
+          <li><strong>Right pane</strong> — the detail view. It shows the fully decoded content of whichever entry you select.</li>
+        </ul>
+        <p>Drag the divider between the panes to resize them. A <strong>search bar</strong> at the top of the left pane filters the list by URL, HTTP method or status code in real time.</p>
+        <img src="assets/ast-help-all-traffic.png" alt="The two-pane interface showing captured network traffic">
+
+        <h2 id="views">The four views</h2>
+        <p>Use the toggle buttons at the top-left to switch between views:</p>
+        <table class="data-table">
+          <thead>
+            <tr><th>View</th><th>What it shows</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>SAML</strong></td><td>Only requests that contain a SAMLRequest or SAMLResponse. This is the default view.</td></tr>
+            <tr><td><strong>All Traffic</strong></td><td>Every HTTP request captured on the page. SAML-bearing requests get a blue left border.</td></tr>
+            <tr><td><strong>Errors</strong></td><td>Network requests that returned a 4xx or 5xx status. The button is disabled until an error is captured.</td></tr>
+            <tr><td><strong>JWT</strong></td><td>A standalone JWT decoder — paste any token to inspect it.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>SAML view</h3>
+        <img src="assets/ast-help-saml.png" alt="The SAML view showing decoded SAML messages">
+        <p>Whenever a page performs a SAML SSO exchange, the request appears in the list automatically — no reload needed. Each entry shows the HTTP method (in color), the message type (SAMLRequest or SAMLResponse), a timestamp and the endpoint URL.</p>
+        <p>Click any entry to decode it. The detail pane shows:</p>
+        <ul>
+          <li><strong>Kind</strong> — e.g. <code>Response</code> or <code>AuthnRequest</code></li>
+          <li><strong>URL, Issuer, Destination, Subject, Status, Encoding, Timestamp</strong></li>
+          <li><strong>Conditions</strong> — NotBefore, NotOnOrAfter and Audience, when present</li>
+          <li><strong>Attributes table</strong> — friendly name, full URN and value(s)</li>
+          <li><strong>Parameters</strong> — RelayState and the raw encoded SAML payload, with the binding type</li>
+          <li><strong>Request &amp; response headers</strong></li>
+          <li><strong>Raw XML</strong> — collapsed by default; click to expand</li>
+        </ul>
+
+        <h3>All Traffic view</h3>
+        <p>Shows every HTTP request the browser made, not just SAML ones. Requests containing SAML are highlighted with a blue left border. Selecting a SAML-tagged entry shows the full SAML detail; selecting a plain entry shows method, status, URL and headers.</p>
+
+        <h3>Errors view</h3>
+        <img src="assets/ast-help-errors.png" alt="The Errors view showing filtered 4xx and 5xx network requests">
+        <p>Filters the network list down to requests that returned a 4xx or 5xx status. The button stays grayed out until an error response is captured, then activates automatically.</p>
+
+        <h3>JWT view</h3>
+        <p>Click <strong>JWT</strong> to open the decoder. Paste a token into the text area or use <strong>Paste from clipboard</strong>. The extension splits it into <strong>Header</strong>, <strong>Payload</strong> and <strong>Signature</strong>, and a <strong>Highlights</strong> panel surfaces the key claims in plain language — issuer, subject, audience, expiry, and whether the token is already expired.</p>
+
+        <h2 id="toolbar">Toolbar buttons</h2>
+        <table class="data-table">
+          <thead>
+            <tr><th>Button</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>⏸ / ▶ Pause / Resume</strong></td><td>Stop or restart capturing new traffic.</td></tr>
+            <tr><td><strong>⊘ Clear</strong></td><td>Remove all captured data from the current session.</td></tr>
+            <tr><td><strong>⬆ Export</strong></td><td>Save all captures as a <code>.json</code> file (SAML-tracer compatible).</td></tr>
+            <tr><td><strong>📂 Import</strong></td><td>Load a previously exported <code>.json</code> file.</td></tr>
+            <tr><td><strong>📄 Report</strong></td><td>Generate a self-contained HTML report in your Downloads folder.</td></tr>
+            <tr><td><strong>⚙ Settings</strong></td><td>Open the settings panel.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="sharing">Sharing captures</h2>
+
+        <h3>HTML report</h3>
+        <p>Click the <strong>Report</strong> button to generate a self-contained <code>.html</code> file in your Downloads folder. It needs no internet connection and opens in any browser. The report includes every SAML capture with decoded attributes, conditions, parameters and raw XML, plus a full network traffic table. A green banner appears after saving with a <strong>Show in Folder</strong> button. To turn it into a PDF, open the report and use <strong>File → Print → Save as PDF</strong>.</p>
+
+        <h3>Copy a single entry</h3>
+        <p>Select an entry, then click the <strong>Copy</strong> button at the top-right of the detail pane. This copies that entry's decoded content as formatted plain text — ideal for pasting into chat, email or a bug report.</p>
+
+        <h3>Export &amp; import</h3>
+        <p>Export saves all captures as structured JSON in the <a href="https://github.com/UNINETT/SAML-tracer" target="_blank" rel="noopener">SAML-tracer</a> format, so it can be re-opened in either extension. To import, use the 📂 button or simply drag-and-drop a <code>.json</code> file anywhere onto the window. Importing switches the session to read-only mode; click ⊘ Clear to return to live capture.</p>
+
+        <h2 id="settings">Settings</h2>
+        <p>Open settings with the ⚙ button. Settings save automatically and persist across browser sessions.</p>
+        <img src="assets/ast-help-settings.png" alt="The settings panel">
+
+        <h3>Highlight domains</h3>
+        <p>Enter URL patterns (one per line, wildcards supported). Any request whose URL matches gets a gold star (★) and a colored border — handy for spotting your IdP or SP traffic at a glance.</p>
+        <pre><code>*mycompany.com
+*okta.com</code></pre>
+
+        <h3>Important headers / parameters</h3>
+        <p>Enter header names or SAML parameter names to pin in the <strong>info bar</strong> — a strip below the toolbar that appears when you select an entry. Pinned values show as chips you can copy with one click; if a value is absent, the chip shows a dash.</p>
+        <pre><code>X-Transaction-Id
+RelayState
+SAMLResponse</code></pre>
+
+        <h3>Show query params for</h3>
+        <p>Enter URL patterns. When a selected request matches, all of its query string parameters are shown in the info bar automatically.</p>
+        <pre><code>*myapp*
+*mycompany.com/api*</code></pre>
+
+        <h3>Extract from URL path</h3>
+        <p>Enter rules in <code>Label | *pattern*</code> format. When a selected URL matches, the extension extracts the last path segment and shows it in the info bar with your label. For example, with the rule <code>Tenant | *tenants/*/config*</code>, a URL of <code>https://myapp.com/tenants/acme-corp/config</code> displays <strong>Tenant: acme-corp</strong>.</p>
+        <pre><code>Config ID | *myapp*
+Tenant | *tenants/*/config*</code></pre>
+
+        <h2 id="devtools">DevTools panel</h2>
+        <p>Open Chrome DevTools on any page (<code>F12</code> or <code>Cmd+Option+I</code>) and click the <strong>SAML</strong> tab. The panel works just like the popup but is automatically filtered to traffic from the tab you're inspecting — useful when several tabs are open at once.</p>
+
+        <h2 id="tips">Tips &amp; troubleshooting</h2>
+        <ul>
+          <li><strong>SAML traffic not showing?</strong> Make sure the extension is loaded and the tab performing the SSO flow is active when you trigger the login. The extension captures in real time — it can't see requests that happened before it was installed.</li>
+          <li><strong>Redirect vs POST binding</strong> — Both are supported. Redirect-binding GET requests are deflate-decompressed automatically; POST-binding form data is decoded from base64.</li>
+          <li><strong>Reviewing someone else's export</strong> — Drag-and-drop their <code>.json</code> file onto the window, or use the 📂 Import button. No active SSO flow needed.</li>
+          <li><strong>Printing a report</strong> — Open the HTML report in Chrome and use <strong>File → Print</strong> → "Save as PDF" for a shareable file with every section expanded.</li>
+        </ul>
+        <div class="callout"><p>Still stuck? Head to the <a href="support.html">Support page</a> for the FAQ, or <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">open an issue on GitHub</a>.</p></div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img src="assets/icon-128.png" alt="" style="width:28px;height:28px;border-radius:6px;">
+            <span>Awesome SAML Tracer</span>
+          </a>
+          <p>A modern Chrome extension for capturing, decoding and sharing SAML SSO traffic — built as a full-featured replacement for the original SAML-tracer.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to guide</a>
+          <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Chrome Web Store</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="support.html">Support &amp; FAQ</a>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Report an issue</a>
+          <a href="privacy.html">Privacy policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer" target="_blank" rel="noopener">GitHub repository</a>
+          <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Support on Ko-fi ☕</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Awesome SAML Tracer. Not affiliated with the original SAML-tracer project.</span>
+        <span>Made for the SSO debugging crowd.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
