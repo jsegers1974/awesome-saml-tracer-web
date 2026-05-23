@@ -14,7 +14,7 @@ awesome-saml-tracer-web/
 ├── privacy.html      Privacy policy
 ├── css/styles.css    All styles — plain CSS, no preprocessor
 ├── js/main.js        Minimal vanilla JS (mobile nav toggle, footer year)
-├── assets/           logo.svg, favicon.svg, icon-16/48/128.png, screenshots
+├── assets/           logo.svg, favicon.svg, icon-16/48/128.png, ast-help-*.png screenshots
 ├── .nojekyll         Disables Jekyll on GitHub Pages
 └── DEPLOY.md         Deployment options (GitHub Pages / Cloudflare Pages / Netlify)
 ```
@@ -41,6 +41,25 @@ awesome-saml-tracer-web/
 - GitHub repo: `https://github.com/jsegers1974/awesome-saml-tracer`
 - Ko-fi: `https://ko-fi.com/samldev`
 
+## Screenshots
+
+Screenshots follow the naming convention `ast-help-<tab-or-function>.png` and live in `assets/`. Current set:
+
+| File | What it shows | Used in |
+|---|---|---|
+| `ast-help-all-traffic.png` | All Traffic tab | `index.html` hero, `how-to.html` interface section |
+| `ast-help-saml.png` | SAML tab | `index.html` showcase, `how-to.html` SAML view section |
+| `ast-help-errors.png` | Errors tab | `how-to.html` Errors view section |
+| `ast-help-settings.png` | Settings panel | `index.html` showcase, `how-to.html` settings section |
+
+To add or replace a screenshot: drop the new PNG into `assets/` using the same naming convention, then update the `src` attribute in the relevant HTML files.
+
+Screenshots were captured against `samltest.id` (a public SAML test IdP with dummy credentials) so they are safe to publish.
+
+## Git
+
+The repo is initialized at the workspace root (`/Users/jake.segers/Workspaces/awesome-saml-tracer-web`). `.DS_Store` is gitignored. The stray `help_saml_tab.png` at the repo root is untracked — delete or move it to `assets/` when convenient.
+
 ## Deployment
 
 No build command. Publish the `awesome-saml-tracer-web/` directory as-is to any static host. See `awesome-saml-tracer-web/DEPLOY.md` for step-by-step instructions for GitHub Pages, Cloudflare Pages, and Netlify.
@@ -51,10 +70,10 @@ No build step — just serve the `awesome-saml-tracer-web/` directory over HTTP.
 
 ```bash
 # Python (nothing to install)
-python3 -m http.server 8080 --directory awesome-saml-tracer-web/awesome-saml-tracer-web
+python3 -m http.server 8080 --directory awesome-saml-tracer-web
 
 # Or with Node/npx
-npx serve awesome-saml-tracer-web/awesome-saml-tracer-web
+npx serve awesome-saml-tracer-web
 ```
 
 Then open `http://localhost:8080` in Chrome. Do not open `.html` files directly via `file://` — browsers block some relative resource loads that way and it won't match production behavior.
