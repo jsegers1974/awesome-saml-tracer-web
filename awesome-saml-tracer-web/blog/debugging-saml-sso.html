@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Debugging SAML SSO: A Field Guide for IAM Engineers (and the Users Who Test Their Patience) | Awesome SAML Tracer</title>
+  <meta name="description" content="SAML SSO broken again? Learn how to decode SAMLResponse payloads, diagnose assertion errors, trace the full SSO flow, and get the data you need — without a 45-minute Zoom call.">
+  <link rel="canonical" href="https://awesome-saml-tracer-web.pages.dev/blog/debugging-saml-sso.html">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="../css/styles.css">
+  <meta property="og:title" content="Debugging SAML SSO: A Field Guide for IAM Engineers">
+  <meta property="og:description" content="SAML SSO broken again? Learn how to decode SAMLResponse payloads, diagnose assertion errors, and get the data you need — without a 45-minute Zoom call.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/awesome-saml-tracer-banner.png">
+  <meta property="article:published_time" content="2026-05-23">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="../index.html">
+          <img src="../assets/logo.svg" alt="">
+          <span>Awesome SAML Tracer</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="../index.html">Home</a>
+          <a href="../how-to.html">How-to</a>
+          <a href="../blog.html" class="active">Blog</a>
+          <a href="../support.html">Support</a>
+          <a href="../privacy.html">Privacy</a>
+          <a class="btn btn-primary nav-cta" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page hero ===== -->
+  <section class="page-hero">
+    <div class="container">
+      <img class="page-hero-icon" src="../assets/logo.svg" alt="Awesome SAML Tracer">
+      <h1>Debugging SAML SSO</h1>
+      <p>A field guide for IAM engineers — and the users who test their patience.</p>
+    </div>
+  </section>
+
+  <!-- ===== Post ===== -->
+  <div class="container">
+    <article class="blog-post">
+
+      <div class="post-meta">
+        <time datetime="2026-05-23">May 23, 2026</time>
+        <span>·</span>
+        <span>12 min read</span>
+        <span>·</span>
+        <span class="post-tag">SAML</span>
+        <span class="post-tag">SSO</span>
+        <span class="post-tag">IAM</span>
+        <span class="post-tag">Debugging</span>
+      </div>
+
+      <p>Picture this: it's 2pm on a Tuesday. Your Slack lights up. <em>"SSO is broken."</em> That's it. No error message. No screenshot. No reproducible steps. Just vibes and a vague sense of dread. Somewhere, a user is staring at a redirect loop, wondering why clicking "Login with company SSO" has started an existential journey instead of opening their dashboard.</p>
+
+      <p>Welcome to SAML debugging — where the errors are cryptic, the payloads are base64-encoded XML, and the answer is almost always something the Identity Provider is doing wrong. (It's always the IdP.)</p>
+
+      <p>This guide covers how SAML SSO actually works, what's hiding inside a SAMLResponse, the most common assertion errors and how to fix them, and — crucially — how to stop playing telephone between your end users and your IAM team when things go wrong.</p>
+
+      <h2 id="how-saml-works">How SAML SSO Actually Works (In Plain English)</h2>
+
+      <p>Before we debug it, let's understand what's supposed to happen. SAML 2.0 (Security Assertion Markup Language, for those who enjoy typing out acronyms) is the protocol that lets your users click "Sign in with [Company]" and end up authenticated without anyone — your app included — ever seeing their password. Magic! Except it's not magic. It's XML flying around in browser redirects, and once you understand the choreography, most SSO debugging becomes a lot less mysterious.</p>
+
+      <p>Here's the SP-initiated flow, step by step:</p>
+
+      <ol>
+        <li>The user visits your app (the <strong>Service Provider</strong>, or SP) and clicks "Login with SSO."</li>
+        <li>The SP generates an <strong>AuthnRequest</strong> — a signed XML document saying "hey IdP, please authenticate this person for me."</li>
+        <li>The SP base64-encodes and (for redirect bindings) deflate-compresses this request, then redirects the user's browser to the <strong>Identity Provider</strong> (IdP) — Okta, Microsoft Entra ID, Google Workspace, Ping, whatever your company runs.</li>
+        <li>The IdP receives the request, authenticates the user (they're usually already logged in via SSO session), and generates a <strong>SAMLResponse</strong>.</li>
+        <li>The IdP posts the SAMLResponse back to the SP via a browser-based form POST. The browser is just the delivery courier here — it has no idea what it's carrying.</li>
+        <li>The SP validates the response, extracts the user's identity and attributes, and logs them in.</li>
+      </ol>
+
+      <p>Simple, right? Except every single one of those steps is an opportunity for something to go wrong — which is why SAML SSO troubleshooting is its own art form.</p>
+
+      <h2 id="anatomy">Anatomy of a SAMLResponse (What's Actually in That Blob)</h2>
+
+      <p>The SAMLResponse that gets posted to your SP is a base64-encoded chunk of XML containing a SAML Assertion. If you've ever tried to decode one manually — copy it out of DevTools, paste into a base64 decoder, then try to read minified XML in a text editor — you know the experience is roughly equivalent to reading a novel through a keyhole.</p>
+
+      <p>But here's what's hiding in there:</p>
+
+      <h3>Issuer</h3>
+      <p>Who sent this assertion. Should match your IdP's entity ID exactly. One wrong character — a trailing slash, <code>http</code> vs <code>https</code> — and authentication fails immediately. No trial, no appeal, no useful error message.</p>
+
+      <h3>Subject / NameID</h3>
+      <p>Who is being authenticated. Usually an email address or a persistent opaque identifier. This is what your SP uses to tie the SAML assertion to a user account. If your SP is looking for an email and the IdP is sending a UUID, nobody's getting in.</p>
+
+      <h3>Conditions</h3>
+      <p>Two timestamps that will ruin your day if you're not careful:</p>
+      <ul>
+        <li><strong>NotBefore</strong> — the assertion isn't valid before this time.</li>
+        <li><strong>NotOnOrAfter</strong> — the assertion expires at this time.</li>
+      </ul>
+      <p>Clock skew between your IdP and SP servers? Even a two-minute drift can cause "SAML response is not yet valid" errors that appear randomly and reproducibly only for users in specific time zones. This is the SSO equivalent of your milk expiring five minutes before you wanted cereal.</p>
+
+      <h3>AttributeStatement</h3>
+      <p>The good stuff. This is where the IdP sends user attributes — email, first name, last name, groups, roles, department, employee ID, whatever you've configured. If a user can log in but has the wrong permissions, it's almost always because an attribute is missing, incorrectly mapped, or named differently than what the SP expects. <code>firstName</code> vs <code>first_name</code> vs <code>urn:oid:2.5.4.42</code> — IAM engineers know this particular pain intimately.</p>
+
+      <h3>Status</h3>
+      <p>Whether the IdP actually succeeded. A StatusCode of <code>urn:oasis:names:tc:SAML:2.0:status:Success</code> means good news. Anything else — <code>AuthnFailed</code>, <code>NoPassive</code>, <code>RequestDenied</code> — means the IdP rejected the request for a reason it may or may not deign to explain in the StatusMessage.</p>
+
+      <h3>Signature</h3>
+      <p>The entire assertion is signed with the IdP's private key. The SP validates it with the IdP's public certificate. Expired certificate? Wrong certificate configured on the SP side? The signature validation will fail and the user will see an error that tells them absolutely nothing useful about why.</p>
+
+      <h2 id="common-errors">Common SAML SSO Errors (And What They Actually Mean)</h2>
+
+      <p>"SAML authentication failed" is the check-engine light of error messages — technically accurate, completely useless. Here's a translation guide for the errors IAM engineers see most often:</p>
+
+      <h3>"NotBefore condition not met" / "Response expired"</h3>
+      <p><strong>Translation:</strong> Clock skew. Your IdP and SP think they live in different times. Sync your NTP servers and/or increase the allowed clock skew tolerance in your SP configuration. Most SPs allow ±5 minutes; bump this first before assuming something is deeply wrong.</p>
+
+      <h3>"Audience restriction check failed"</h3>
+      <p><strong>Translation:</strong> The SAMLResponse was addressed to a different SP entity ID than the one that received it. Check that the SP metadata registered in your IdP has the exact right entity ID — <code>https://myapp.com</code> and <code>http://myapp.com</code> are different strings, and SAML doesn't give partial credit.</p>
+
+      <h3>"InResponseTo attribute does not match"</h3>
+      <p><strong>Translation:</strong> The response references an AuthnRequest ID that the SP has forgotten about. Common causes: the user opened the login page in two tabs simultaneously, the SP restarted between the AuthnRequest and SAMLResponse, or session cookies got cleared mid-flow. Tell the user to close all tabs, clear cookies, and try again from a fresh browser window.</p>
+
+      <h3>"User is not assigned to this application"</h3>
+      <p><strong>Translation:</strong> This isn't really a SAML protocol error — the IdP just refused to authenticate the user for this SP because they haven't been granted access. The fix is in the IdP: assign the user (or their group) to the application. IAM's bread and butter.</p>
+
+      <h3>"Signature validation failed"</h3>
+      <p><strong>Translation:</strong> Something is wrong with the certificate chain. Start by checking that the signing certificate configured on the SP matches the one the IdP is currently using. IdPs sometimes rotate certificates without warning — or with a warning that went to the email alias nobody reads.</p>
+
+      <h2 id="support-problem">The Support Ticket Problem: Getting SAML Data From End Users</h2>
+
+      <p>Here's where things get genuinely hard — not technically hard, but <em>humanly</em> hard.</p>
+
+      <p>A user has an SSO problem. You, the IAM engineer, need to see their SAMLResponse to diagnose it. The SAMLResponse only exists inside the user's browser for a fraction of a second — it's in a form POST that happens and immediately redirects. How do you get it?</p>
+
+      <p><strong>Option A (the old way):</strong> "Can you open Chrome DevTools, go to the Network tab, check 'Preserve log', reproduce the login, scroll through hundreds of requests, find the one with 'SAMLResponse' in the form data, click on it, go to Payload, copy the SAMLResponse value — it's the really long one — then paste it into a base64 decoder online, and send me the output?"</p>
+
+      <p><em>(The user has already stopped reading at "Chrome DevTools.")</em></p>
+
+      <p><strong>Option B:</strong> You ask them to install a SAML tracing extension, reproduce the login, and click Export.</p>
+
+      <p>The difference between Option A and Option B is the difference between a 45-minute Zoom session where you're performing live tech support on your own tech support request, and a 2-minute self-service flow where the user captures exactly what you need and sends it over. The data you get from Option B is also more complete — you get the full decoded assertion, all headers, all parameters, and a clean timeline of the SSO flow.</p>
+
+      <h2 id="saml-tracing">SAML Tracing Tools: What They Are and Why They Matter</h2>
+
+      <p>A SAML tracer is a browser extension that monitors your browser's network traffic for SAML messages. When it detects a SAMLRequest or SAMLResponse flying through, it captures it, decodes it from base64, uncompresses it if necessary, parses the XML, and presents the whole thing in a readable format. No manual base64 decoding. No squinting at minified XML. No copy-pasting between tools.</p>
+
+      <p>The original standard was the Firefox SAML-tracer extension — useful, battle-tested, and now effectively abandoned. It's Manifest V2, doesn't work in Chrome, and the last meaningful update was years ago.</p>
+
+      <p><strong><a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Awesome SAML Tracer</a></strong> is its modern replacement — built for Chrome, Manifest V3, and designed to serve two audiences simultaneously:</p>
+
+      <ul>
+        <li><strong>End users</strong> who need to capture and share SAML data without understanding what a SAMLResponse is. One click to export. One click to generate a self-contained HTML report they can email or attach to a ticket.</li>
+        <li><strong>IAM engineers</strong> who need to analyse that data. Decoded assertions, full attribute tables with friendly names and raw URNs, request/response headers, raw XML when you want it, and an Errors view that filters the network traffic down to 4xx/5xx responses so you can see exactly where the flow broke.</li>
+      </ul>
+
+      <p>It also imports the original SAML-tracer JSON format, so if your users or vendors are already exporting captures, Awesome SAML Tracer can open them directly.</p>
+
+      <h2 id="workflow">A Real SAML Debugging Workflow</h2>
+
+      <p>Here's what a modern SSO debugging session looks like with the right tooling in place:</p>
+
+      <ol>
+        <li>Install <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Awesome SAML Tracer</a> from the Chrome Web Store and pin it to your toolbar.</li>
+        <li>Click the extension icon to open the panel, then navigate to the SSO login page.</li>
+        <li>Trigger the authentication flow — log in as the affected user, or ask the user to do it while the extension is open.</li>
+        <li>The <strong>SAML tab</strong> populates in real time as the AuthnRequest and SAMLResponse fly through. Select the SAMLResponse entry to see the fully decoded assertion: Issuer, Subject, Conditions, AttributeStatement, Status.</li>
+        <li>Check the <strong>Conditions timestamps</strong> if you suspect clock skew.</li>
+        <li>Check the <strong>AttributeStatement</strong> if the user authenticated but has the wrong permissions or is missing from a group.</li>
+        <li>Switch to the <strong>Errors view</strong> to see any 4xx/5xx responses in the flow — useful for spotting upstream failures before the SAML exchange even happens.</li>
+        <li>Click <strong>Report</strong> to generate a self-contained HTML file. It opens in any browser, needs no internet connection, and contains everything an SP vendor's support team will ask for.</li>
+      </ol>
+
+      <p>The whole diagnostic cycle — from "SSO is broken" to "here is the exact attribute that is missing and why" — takes under five minutes when both sides have the tooling.</p>
+
+      <div class="callout">
+        <p><strong>Tip for IAM teams:</strong> Put the Chrome Web Store link and a one-paragraph install guide in your internal IT knowledge base. The next time a user files a "SSO is broken" ticket, you can reply with a link instead of scheduling a screen-share.</p>
+      </div>
+
+      <h2 id="checklist">SAML SSO Debugging Checklist</h2>
+
+      <p>When you're staring at a broken SSO flow and need to work through it systematically:</p>
+
+      <ul>
+        <li>✅ Can the user authenticate at all, or does the IdP reject them outright? (User assignment / licence issue)</li>
+        <li>✅ Is the StatusCode in the SAMLResponse <code>Success</code>?</li>
+        <li>✅ Do the Issuer and Audience match exactly what the SP expects?</li>
+        <li>✅ Are the Conditions timestamps valid? Check for clock skew.</li>
+        <li>✅ Is the signature valid? Check the IdP's signing certificate in the SP config.</li>
+        <li>✅ Are all required attributes present in the AttributeStatement with the expected names and formats?</li>
+        <li>✅ If the user <em>can</em> log in but has wrong permissions — check group/role attribute mapping.</li>
+        <li>✅ If the flow works in one browser/device but not another — check for cookie/session conflicts.</li>
+        <li>✅ Is this a redirect-binding or POST-binding issue? Both are supported; make sure the SP is configured for the binding the IdP is sending.</li>
+      </ul>
+
+      <h2 id="conclusion">In Summary: It's Almost Always the IdP</h2>
+
+      <p>SAML SSO debugging feels arcane at first because the errors are generic, the data is encoded, and the problem often lives in a system you don't control. But once you understand the flow — AuthnRequest out, SAMLResponse in, assertion validated — it mostly reduces to "which condition does this specific assertion violate and why."</p>
+
+      <p>The real bottleneck isn't understanding the protocol. It's getting the data. A SAML tracer removes that bottleneck by making it trivially easy for end users to capture exactly what an IAM engineer needs, and trivially easy for engineers to analyse it.</p>
+
+      <p>The next time a "SSO is broken" message lands in your Slack, you'll know exactly what to do. And when you've followed the checklist and the problem turns out to be a misconfigured attribute mapping on the IdP side — well. It's always the IdP.</p>
+
+      <div class="cta-box">
+        <h3>Debug your next SSO issue in minutes</h3>
+        <p>Awesome SAML Tracer is free, private, and works entirely in your browser — nothing leaves your device.</p>
+        <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+      </div>
+
+    </article>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="../index.html">
+            <img src="../assets/logo.svg" alt="" style="width:28px;height:28px;border-radius:6px;">
+            <span>Awesome SAML Tracer</span>
+          </a>
+          <p>A modern Chrome extension for capturing, decoding and sharing SAML SSO traffic — built as a full-featured replacement for the original SAML-tracer.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="../index.html">Home</a>
+          <a href="../how-to.html">How-to guide</a>
+          <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Chrome Web Store</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="../support.html">Support &amp; FAQ</a>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Report an issue</a>
+          <a href="../privacy.html">Privacy policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer" target="_blank" rel="noopener">GitHub repository</a>
+          <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Support on Ko-fi ☕</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Awesome SAML Tracer. Not affiliated with the original SAML-tracer project.</span>
+        <span>Made for the SSO debugging crowd.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
