@@ -14,7 +14,8 @@ awesome-saml-tracer-web/
 ├── privacy.html      Privacy policy
 ├── css/styles.css    All styles — plain CSS, no preprocessor
 ├── js/main.js        Minimal vanilla JS (mobile nav toggle, footer year)
-├── assets/           logo.svg, favicon.svg, icon-16/48/128.png, ast-help-*.png screenshots
+├── assets/           logo.svg, favicon.svg, icon-16/48/128.png, ast-help-*.png screenshots,
+│                     awesome-saml-tracer-banner.png, chrome-webstore-badge.png
 ├── .nojekyll         Disables Jekyll on GitHub Pages
 └── DEPLOY.md         Deployment options (GitHub Pages / Cloudflare Pages / Netlify)
 ```
@@ -41,6 +42,20 @@ awesome-saml-tracer-web/
 - GitHub repo: `https://github.com/jsegers1974/awesome-saml-tracer`
 - Ko-fi: `https://ko-fi.com/samldev`
 
+## Branding assets
+
+| File | Purpose | Used in |
+|---|---|---|
+| `logo.svg` | Primary logo — used in nav, footer, hero, and page headers on all pages | All pages |
+| `awesome-saml-tracer-banner.png` | 1200×400 pixel-art banner — used as `og:image` on all pages | All pages (`<head>`) |
+| `chrome-webstore-badge.png` | Official Chrome Web Store badge — not currently in HTML, kept for future use | — |
+| `icon-128/48/16.png` | Extension icons — not used in site UI | — |
+
+**Logo placement rules:**
+- Nav brand (top-left) and footer brand: `logo.svg`
+- Landing page hero: `logo.svg` with `.hero-logo` class (96×96, `border-radius: 22px`)
+- Inner page headers (how-to, support, privacy): `logo.svg` with `.page-hero-icon` class (72×72, `border-radius: 18px`)
+
 ## Screenshots
 
 Screenshots follow the naming convention `ast-help-<tab-or-function>.png` and live in `assets/`. Current set:
@@ -58,7 +73,10 @@ Screenshots were captured against `samltest.id` (a public SAML test IdP with dum
 
 ## Git
 
-The repo is initialized at the workspace root (`/Users/jake.segers/Workspaces/awesome-saml-tracer-web`). `.DS_Store` is gitignored. The stray `help_saml_tab.png` at the repo root is untracked — delete or move it to `assets/` when convenient.
+- Remote: `git@github.com:jsegers1974/awesome-saml-tracer-web.git` (SSH)
+- SSH key lives at `~/.ssh/id_ed25519` — must be loaded before pushing: `ssh-add ~/.ssh/id_ed25519`
+- `.DS_Store` is gitignored
+- Stray `help_saml_tab.png` at the repo root is untracked — delete or move to `assets/` when convenient
 
 ## Deployment
 
@@ -84,4 +102,4 @@ Then open `http://localhost:8080` in Chrome. Do not open `.html` files directly 
 - **Update screenshots:** drop new PNGs into `assets/` and update the `src` attributes in the relevant HTML files.
 - **Change branding color:** update `--accent` and `--accent-hover` in `css/styles.css`.
 - **Update the Chrome Web Store URL:** find-and-replace across all four `.html` files.
-- **Fix the `og:image` for social previews:** replace the relative `assets/icon-128.png` path with the absolute URL once the final domain is known.
+- **Fix the `og:image` for social previews:** replace the relative `assets/awesome-saml-tracer-banner.png` path with an absolute URL once the final domain is known. Find-and-replace across all four `.html` files.
