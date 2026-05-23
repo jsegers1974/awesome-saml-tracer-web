@@ -177,6 +177,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .nav-links a:hover { color: var(--fg); text-decoration: none; }
 .nav-links a.active { color: var(--accent); }
 .nav-cta { margin-left: .4rem; }
+.nav-links .btn-primary { color: #fff; }
 .nav-toggle {
   display: none;
   margin-left: auto;
@@ -373,6 +374,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .compare .no { color: var(--fg-muted); }
 @media (prefers-color-scheme: dark) {
   .compare .yes { color: #56d364; }
+  .nav-links .btn-primary { color: #0c1124; }
 }
 
 /* ---------- Privacy band ---------- */
