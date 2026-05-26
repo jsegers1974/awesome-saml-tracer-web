@@ -253,6 +253,8 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
   justify-content: center;
   flex-wrap: wrap;
 }
+.hero-also { color: var(--hero-muted); font-size: .9rem; margin-top: .6rem; }
+.hero-also a { color: var(--hero-fg); }
 .hero-meta {
   margin-top: 1.6rem;
   display: flex;
