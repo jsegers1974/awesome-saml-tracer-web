@@ -558,6 +558,14 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
   margin: 1.4rem 0;
   font-size: .95rem;
 }
+/* Inline toolbar-button icons in docs tables (matches the extension's Lucide set) */
+.tb-icon {
+  width: 18px; height: 18px;
+  vertical-align: -4px;
+  margin-right: 7px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
 .data-table th, .data-table td {
   text-align: left;
   padding: 10px 14px;
