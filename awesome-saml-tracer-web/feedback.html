@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Share feedback — Awesome SAML Tracer</title>
+  <meta name="description" content="Tell us what to improve in Awesome SAML Tracer — what you use it for, what's missing, and what would make you recommend it.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <meta property="og:image" content="assets/awesome-saml-tracer-banner.png">
+  <style>
+    .fb-form{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:22px;text-align:left}
+    .fb-field{display:flex;flex-direction:column;gap:7px}
+    .fb-field label{font-weight:600}
+    .fb-field .hint{color:var(--muted,#59637a);font-size:.9em}
+    .fb-field textarea,.fb-field input[type=email]{
+      font:inherit;color:inherit;background:var(--surface,#fff);
+      border:1px solid var(--border,#d7dce6);border-radius:10px;padding:11px 13px;width:100%;
+      transition:border-color .15s,box-shadow .15s;}
+    .fb-field textarea{min-height:92px;resize:vertical}
+    .fb-field textarea:focus,.fb-field input[type=email]:focus{
+      outline:none;border-color:var(--accent,#3367d6);box-shadow:0 0 0 3px rgba(51,103,214,.15);}
+    .fb-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+    .fb-status{font-weight:500}
+    .fb-status.ok{color:#1f9d6b}
+    .fb-status.err{color:#d1495b}
+    .fb-honey{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+    .fb-done{max-width:640px;margin:0 auto;text-align:center;display:none}
+    .fb-done h2{margin-top:0}
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <img src="assets/logo.svg" alt="">
+          <span>Awesome SAML Tracer</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to</a>
+          <a href="blog.html">Blog</a>
+          <a href="support.html">Support</a>
+          <a href="privacy.html">Privacy</a>
+          <a class="btn btn-secondary nav-cta" href="https://ko-fi.com/samldev" target="_blank" rel="noopener">☕ Ko-fi</a>
+          <a class="btn btn-primary nav-cta" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Add to Chrome</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page hero ===== -->
+  <section class="page-hero">
+    <div class="container">
+      <img class="page-hero-icon" src="assets/logo.svg" alt="Awesome SAML Tracer">
+      <h1>Share feedback</h1>
+      <p>You're shaping where this tool goes next. Tell us what works, what doesn't, and what's missing — every note is read.</p>
+    </div>
+  </section>
+
+  <!-- ===== Feedback form ===== -->
+  <section class="section">
+    <div class="container">
+
+      <form class="fb-form" id="fb-form" novalidate>
+        <div class="fb-field">
+          <label for="use_case">What do you use Awesome SAML Tracer for?</label>
+          <span class="hint">e.g. debugging Okta/Azure AD logins, verifying assertions, sharing captures with a team.</span>
+          <textarea id="use_case" name="use_case" maxlength="4000"></textarea>
+        </div>
+
+        <div class="fb-field">
+          <label for="pain">What's missing or frustrating?</label>
+          <span class="hint">The gaps and rough edges are the most useful thing you can tell us.</span>
+          <textarea id="pain" name="pain" maxlength="4000"></textarea>
+        </div>
+
+        <div class="fb-field">
+          <label for="recommend">What would make you recommend it to a colleague?</label>
+          <textarea id="recommend" name="recommend" maxlength="4000"></textarea>
+        </div>
+
+        <div class="fb-field">
+          <label for="email">Email <span class="hint">(optional — only if you're open to us following up)</span></label>
+          <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+
+        <!-- Honeypot: hidden from humans; bots that fill it are dropped. -->
+        <div class="fb-honey" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!-- Context tags, filled by script. -->
+        <input type="hidden" name="v" id="fb-version" value="">
+        <input type="hidden" name="source" id="fb-source" value="site">
+
+        <!-- Optional Cloudflare Turnstile — enable later by setting TURNSTILE_SECRET
+             and uncommenting this + the script tag below with your site key:
+        <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY"></div>
+        -->
+
+        <div class="fb-actions">
+          <button class="btn btn-primary" type="submit" id="fb-submit">Send feedback</button>
+          <span class="fb-status" id="fb-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <div class="fb-done" id="fb-done">
+        <h2>Thanks — that's genuinely helpful. 🙏</h2>
+        <p class="lead" style="margin:0 auto 20px;">Your feedback went straight to the person who builds this. Want to do more?</p>
+        <div class="hero-actions" style="justify-content:center;">
+          <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej/reviews" target="_blank" rel="noopener">Leave a quick review</a>
+          <a class="btn btn-secondary btn-lg" href="index.html">Back to the site</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img src="assets/icon-128.png" alt="" style="width:28px;height:28px;border-radius:6px;">
+            <span>Awesome SAML Tracer</span>
+          </a>
+          <p>A modern Chrome extension for capturing, decoding and sharing SAML SSO traffic — built as a full-featured replacement for the original SAML-tracer.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="index.html">Home</a>
+          <a href="how-to.html">How-to guide</a>
+          <a href="https://chromewebstore.google.com/detail/pilkjgooejhajccieiebbihilnclbpej" target="_blank" rel="noopener">Chrome Web Store</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="support.html">Support &amp; FAQ</a>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer/issues" target="_blank" rel="noopener">Report an issue</a>
+          <a href="privacy.html">Privacy policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="https://github.com/jsegers1974/awesome-saml-tracer" target="_blank" rel="noopener">GitHub repository</a>
+          <a href="https://ko-fi.com/samldev" target="_blank" rel="noopener">Support on Ko-fi ☕</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Awesome SAML Tracer. Not affiliated with the original SAML-tracer project.</span>
+        <span>Made for the SSO debugging crowd.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      // Tag the submission with the extension build + where it came from.
+      var params = new URLSearchParams(location.search);
+      var v = params.get('v') || '';
+      document.getElementById('fb-version').value = v;
+      document.getElementById('fb-source').value = v ? 'extension' : 'site';
+
+      var form = document.getElementById('fb-form');
+      var statusEl = document.getElementById('fb-status');
+      var submitBtn = document.getElementById('fb-submit');
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        statusEl.className = 'fb-status';
+        statusEl.textContent = '';
+
+        var data = new FormData(form);
+        var filled = ['use_case', 'pain', 'recommend'].some(function (k) {
+          return (data.get(k) || '').toString().trim();
+        });
+        if (!filled) {
+          statusEl.className = 'fb-status err';
+          statusEl.textContent = 'Please fill in at least one field.';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        statusEl.textContent = 'Sending…';
+        try {
+          var res = await fetch('/api/feedback', { method: 'POST', body: data });
+          var body = await res.json().catch(function () { return {}; });
+          if (res.ok && body.ok) {
+            form.style.display = 'none';
+            document.getElementById('fb-done').style.display = 'block';
+            return;
+          }
+          statusEl.className = 'fb-status err';
+          statusEl.textContent = body.error || 'Something went wrong. Please try again.';
+        } catch (err) {
+          statusEl.className = 'fb-status err';
+          statusEl.textContent = 'Could not reach the server. Please try again.';
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
